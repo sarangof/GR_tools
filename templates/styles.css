@@ -1,0 +1,64 @@
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, label2, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+
+body {
+	background: #FFFFFF !important;
+	color: #4B4B4B;
+		-webkit-font-smoothing: antialiased; /* Fix for webkit rendering */
+		-webkit-text-size-adjust: 100%;
+	font: 10.75px/1.9 Roboto; /* font-size/line-height/font-family */
+}
+
+h1, h3, h4, h5, h6 {
+	font-family: 'Roboto', serif;
+}
+
+h3 {
+	font-weight:bold !important;
+}
+
+h2 {
+	font-family: 'Roboto Slab', serif;
+	font-weight: bold !important;
+}
+
+h1, h2, h4, h5, h6 {
+	margin-bottom: 15px;
+	color: #2F3C72;
+	line-height: 1.15;
+}
+
+h4 { font-size:1.5em !important; }
+
+h3 {
+	margin-top: 25px !important;
+	margin-bottom: 20px;
+	color: #2F3C72;
+	line-height: 1.15;
+	font-size:26px !important;
+	text-transform:capitalize !important;
+/*	font-variant:small-caps !important;*/
+}
+
+h3.regTopMargin { 
+	margin-top:5px !important; 
+}

@@ -10,10 +10,13 @@ from bokeh.transform import factor_cmap
 
 #output_file('GR_viz.html')
 
-def demographics():
-	return None
+def demographics(db):
+	# Cumulative
+	return figure()
+
 
 def status(db):
+	# Cumulative. Missing some demographics.
 
 	# currently incarcerated
 	# removed pre-release from the program 
@@ -26,9 +29,12 @@ def status(db):
 	#elif db['prerelease_key'] == 1:
 	#	pass
 
-	return None
+	return figure()
+
 
 def programming(db):
+	# Cumulative and by individual.
+
 	source = ColumnDataSource(ColumnDataSource.from_df(db.reset_index()))
 	#source.add(db.index, 'index')
 	
@@ -49,6 +55,8 @@ def programming(db):
 	return table
 
 def basic_needs(db):
+	# Cumulative and by individual.
+
 	def number_yes(db,column):
 		try:
 			return sum(int(''.join(x.lower().split(' '))=='yes') for x in db[column]) 
@@ -66,19 +74,27 @@ def basic_needs(db):
 	return p
 
 def violations_sanctions(db):
-	return None
+	# Individual level
+	return figure()
 
 def employment_community(db):
-	return None
+	# Cumulative and by individual.
+	return figure()
 
 def Family(db):
-	return None
+	# Cumulative and by individual.
+	return figure()
+
 
 def Fidelity(db):
-	return None
+	# Cumulative
+	return figure()
+
 
 def Individual(db):
-	return None
+	# Don't... remember.
+	return figure()
+
 
 db = pd.read_excel('GR_.xlsx')
 
@@ -86,7 +102,7 @@ db = pd.read_excel('GR_.xlsx')
 
 category_names = { 
 	'Demographics':'demographics',
-	'Status': 'status',		
+	'Status':'status',		
 	'Programming':'programming',
 	'Basic needs':'basic_needs',
 	'Rewards/Sanctions/Violations':'violations_sanctions',
@@ -96,27 +112,30 @@ category_names = {
 	'Individual':'Individual'
 }
 
-
 def update_dropdown(db, category_names = []):
 	if not category_names:
+		print("I am not.")
 		plot = None
 	else:
 		print("Here I am.")
-		plot = globals()[category_names[str(dropdown.value)]](db)
-	return plot
+		plot = column(programming(db))
+		rootLayout = curdoc().get_model_by_name('main_layout')
+		listOfSubLayouts = rootLayout.children
+		print(globals()[category_names[str(dropdown.value)]](db))
+		to_remove = curdoc().get_model_by_name('view_space')
+		listOfSubLayouts.remove(to_remove)
+		plot = globals()[category_names[str(dropdown.value)]](db)#programming(db)
+		listOfSubLayouts.append(column(plot, name='view_space'))
 
 print("HOLI")
-
 dropdown = Dropdown(label = 'Categories', menu = [(x,y) for x,y in zip(category_names.keys(), category_names.keys())], value='Basic needs')
-dropdown.on_change('value', lambda attr, old, new: update_dropdown(db,category_names))#, lambda attr, old, new: update_view())
 
-dropdown_widget = widgetbox(dropdown)
+dropdown_widget = widgetbox(dropdown,name='dropdown')
+dropdown.on_change('value', lambda attr, old, new: update_dropdown(db, category_names))#, lambda attr, old, new: update_view())
+plot = column(basic_needs(db),name='view_space')
 
-plot=basic_needs(db)
-curdoc().add_root(row(dropdown_widget,plot))
+curdoc().add_root(row(dropdown_widget,plot,name='main_layout'))
 curdoc().title = "Dashboard"
-
-update_dropdown(db)
 
 #show(barplot_prerelease_preparation)
 #curdoc().title = "Dashboard"
